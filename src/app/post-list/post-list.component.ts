@@ -8,9 +8,7 @@ import { Subscription } from "rxjs";
   styleUrls: ["./post-list.component.css"]
 })
 export class PostListComponent implements OnInit, OnDestroy {
-  ngOnDestroy(): void {
-    throw new Error("Method not implemented.");
-  }
+  ngOnDestroy(): void {}
   //  posts = [
   //   { title: "first Post ", content: "this is the first post content" },
   //   { title: "first Post ", content: "this is the first post content" },
@@ -18,6 +16,7 @@ export class PostListComponent implements OnInit, OnDestroy {
   //   { title: "first Post ", content: "this is the first post content" }
   // ];
   posts: Post[] = [];
+  isLoanding = false;
   private postsSub: Subscription;
 
   constructor(public postServices: PostService) {}
@@ -27,10 +26,13 @@ export class PostListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.isLoanding = true;
     this.postServices.getPosts();
+
     this.postsSub = this.postServices
       .getPostUpdateListener()
       .subscribe((posts: Post[]) => {
+        this.isLoanding = false;
         this.posts = posts;
       });
   }
